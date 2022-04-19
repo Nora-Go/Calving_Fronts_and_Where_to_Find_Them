@@ -3,3 +3,7 @@ venv/
 .idea
 data/
 data_raw/
+test_results/
+validation_results/
+checkpoints/
+tb_logs/
