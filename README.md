@@ -100,4 +100,4 @@ Other necessary command line arguments are:
   For zone segmentation, choose the checkpoint file that has the highest validation metric (IoU) 
   (you can see the validation metric in the name).
   
-We also provide pretrained checkpoints that you can test, simply adapt the command line arguments accordingly.
+We also provide pretrained checkpoints that you can test at Zenodo (https://zenodo.org/record/6469519), simply adapt the command line arguments accordingly.
