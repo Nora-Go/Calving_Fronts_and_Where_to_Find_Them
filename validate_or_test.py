@@ -125,6 +125,8 @@ def evaluate_model_on_given_dataset(mode, model, datamodule, patch_directory):
     """
     print("Evaluate Model on given dataset ...\n\n")
     model.eval()
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    model.to(device)
     with torch.no_grad():
         losses = []
 
@@ -136,21 +138,21 @@ def evaluate_model_on_given_dataset(mode, model, datamodule, patch_directory):
 
         for i, batch in enumerate(dataloader):
             x, y, x_names, y_names = batch
-            batch_with_batch_shape = (x, y, x_names, y_names)
+            batch_with_batch_shape = (x.to(device), y.to(device), x_names, y_names)
 
             assert x.shape[1] == model.n_channels_of_input, \
                 f"Network has been defined with {model.n_channels_of_input} input channels, " \
                 f"but loaded images have {x.shape[1]} channels. Please check that " \
                 "the images are loaded correctly."
             y_hat = model.give_prediction_for_batch(batch_with_batch_shape)
-            loss, metric = model.calc_loss(y_hat, y)
+            loss, metric = model.calc_loss(y_hat, y.to(device))
             losses.append(loss)
 
             # Take sigmoid of prediction to get probabilities from logits and save probabilities in files
             y_hat = torch.sigmoid(y_hat)
             for index_in_batch in range(len(y_hat)):
                 with open(os.path.join(patch_directory, x_names[index_in_batch]), "wb") as fp:
-                    pickle.dump(y_hat[index_in_batch], fp)
+                    pickle.dump(y_hat[index_in_batch].to("cpu").clone(), fp)
 
         average_loss = sum(losses) / len(losses)
         return average_loss
