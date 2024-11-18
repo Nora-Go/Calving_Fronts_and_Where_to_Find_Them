@@ -48,7 +48,7 @@ Install all requirements using:
 
 ---
 
-Download data here: https://doi.pangaea.de/10.1594/PANGAEA.940950
+Download data here: https://doi.org/10.1594/PANGAEA.940950
 
 And copy it to `/Benchmark_SAR_Glacier_Segmentation/data_raw`.
 Running the `data_processing/check_raw_data_is_correct.py` allows you to check that nothing broke during the download.
